@@ -1,8 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { SearchBar } from "react-native-elements";
 import DisplayCard from "../components/ConstantCardUI/Card";
-import { Context } from "../Context/DonerContext";
+import { Context } from "../Context/DonersearchContex";
 
 export default function SearchScreen({ navigation }) {
   const [value, setvalue] = useState("");
@@ -49,12 +57,30 @@ export default function SearchScreen({ navigation }) {
         />
       ) : result === undefined ? null : result.length == 0 ? (
         <Text>No Result</Text>
-      ) : // <Resultlists
-      //   title={`Total Result (${result.length})`}
-      //   result={result}
-      //   navigation={navigation}
-      // />
-      null}
+      ) : (
+        <ScrollView>
+          <View style={{ flex: 1 }}>
+            <Text style={{ margin: 30, fontWeight: "bold", fontSize: 32 }}>
+              Total Result({state.length})
+            </Text>
+            <FlatList
+              data={state}
+              key={"" + Math.floor(Math.random() * 9999999)}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("NTP", { id: item.id });
+                    }}
+                  >
+                    <DisplayCard result={item} />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 }

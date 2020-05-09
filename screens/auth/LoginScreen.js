@@ -35,6 +35,7 @@ function Login({ navigation, firebase }) {
   const [rightIcon, setRightIcon] = useState("ios-eye");
   const { loggedIn, setLoggedin } = useContext(UserContext);
   const { state, getlogindata } = useContext(Context);
+  console.disableYellowBox = true;
 
   function goToSignup() {
     return navigation.navigate("Register");
@@ -59,7 +60,6 @@ function Login({ navigation, firebase }) {
     for (var i = 0; i < state.length; i++) {
       if (state[i].user === values.email && state[i].pass === values.password) {
         actions.setSubmitting(false);
-        console.log("success");
         check = true;
         var Data = {
           id: state[i].id,

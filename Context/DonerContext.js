@@ -16,25 +16,6 @@ const Foodreducer = (state, action) => {
   }
 };
 
-const getsearch = (dispatch) => {
-  return async (value) => {
-    const response = await Doner.get(
-      `/user.json?orderBy="donation_Type"&startAt="${value}"&print=pretty`
-    );
-    var a = [];
-    var j = 0;
-    for (var i = 0; i < 100; i++) {
-      if (!(response.data[i] == undefined)) {
-        a[j] = response.data[i];
-        j++;
-      }
-    }
-    console.log("search rec");
-    console.log(a);
-    dispatch({ type: "get_filter", payload: a });
-  };
-};
-
 const getlogindata = (dispatch) => {
   return async (name) => {
     const response = await Doner.get(
@@ -48,7 +29,6 @@ const getlogindata = (dispatch) => {
         j++;
       }
     }
-    console.log(a);
     dispatch({ type: "get_login_data", payload: a });
   };
 };
@@ -62,9 +42,14 @@ const getSingleuserdata = (dispatch) => {
 
 const putcomment = (dispatch) => {
   return async (data, callback) => {
-    const response = await Doner.get(
-      `/user.json?orderBy="donation_Type"&equalTo="${data.name}"&print=pretty`
+    var response = await Doner.get(`/user/${data.id - 1}/reviews.json`);
+    await Doner.put(
+      `/user/${data.id - 1}/reviews/${
+        response.data == null ? 0 : response.data.length
+      }.json`,
+      { comment: data.comment, name: data.name, title: data.title }
     );
+    callback();
   };
 };
 
@@ -76,13 +61,14 @@ const putregistrationdata = (dispatch) => {
       title: data.title,
       name: data.name,
       age: data.age,
-      DOB: data.dob,
+      DOB: data.DOB,
       address: data.address,
       donation_Type: data.donation_Type,
       status: data.status,
       religion: data.religion,
       email: data.email,
-      ph: data.phone,
+      Location: data.Location,
+      ph: data.ph,
     });
     var id = response.data.length + 1;
     response = await Doner.get(`/login.json`);
@@ -90,7 +76,8 @@ const putregistrationdata = (dispatch) => {
       id: id,
       user: data.email,
       pass: data.password,
-      account_type: data.type,
+      name: data.title + data.name,
+      account_type: "Person",
     });
     callback();
   };
@@ -108,32 +95,14 @@ const putrevorypass = (dispatch) => {
   };
 };
 
-const getcatdata = (dispatch) => {
-  return async (cat) => {
-    const response = await Doner.get(
-      `/user.json?orderBy="donation_Type"&equalTo="${cat}"&print=pretty`
-    );
-    var a = [];
-    var j = 0;
-    for (var i = 0; i < 100; i++) {
-      if (!(response.data[i] == undefined)) {
-        a[j] = response.data[i];
-        j++;
-      }
-    }
-    dispatch({ type: "get_cat_data", payload: a });
-  };
-};
-
 export const { Context, Provider } = creatrfoodcontext(
   Foodreducer,
   {
-    getcatdata,
     putrevorypass,
     putregistrationdata,
     getlogindata,
-    getsearch,
     getSingleuserdata,
+    putcomment,
   },
   []
 );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { Avatar, Button, ThemeContext } from "react-native-elements";
 import {
   Icon,
@@ -48,9 +48,18 @@ export default ({ result }) => {
               }}
             />
           </Left>
-          <Body style={{ alignSelf: "center" }}>
+          <Body style={{ alignSelf: "center", flexGrow: 1 }}>
             <Text>{result.name}</Text>
             <Text>Donation:{result.donation_Type}</Text>
+            <Text>
+              <Icon
+                name="chat"
+                type="MaterialIcons"
+                style={{ color: "#0099ff", fontSize: 18 }}
+              />
+              Comment({result.reviews !== undefined ? result.reviews.length : 0}
+              )
+            </Text>
           </Body>
           <Right style={{ alignSelf: "flex-start" }}>
             <Text style={{ fontSize: 12 }}>

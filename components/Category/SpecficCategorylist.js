@@ -9,7 +9,7 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { Context } from "../../Context/DonerContext";
+import { Context } from "../../Context/DonercatContext";
 import DisplayCard from "../ConstantCardUI/Card";
 import {
   FontAwesome5,
@@ -24,19 +24,21 @@ export default ({ navigation, route }) => {
   const { state, getcatdata } = useContext(Context);
   const [Ainemate, setanimate] = useState();
   console.disableYellowBox = true;
-  if (navigation.isFocused) {
-    useEffect(() => {
-      navigation.addListener("focus", () => {
-        setanimate(true);
-        getcatdata(route.params.type);
-        setTimeout(() => {
-          setanimate(false);
-        }, 3000);
-      });
-    }, []);
-  }
+  useEffect(() => {
+    setanimate(true);
+    getcatdata(route.params.type);
+    setTimeout(() => {
+      setanimate(false);
+    }, 3000);
+    navigation.addListener("focus", () => {
+      setanimate(true);
+      getcatdata(route.params.type);
+      setTimeout(() => {
+        setanimate(false);
+      }, 3000);
+    });
+  }, []);
 
-  console.log("catspec" + navigation);
   return (
     <View style={{ flex: 1 }}>
       {Ainemate == true ? (
@@ -58,7 +60,6 @@ export default ({ navigation, route }) => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
-                      console.log("cc");
                       navigation.navigate("NTP", { id: item.id });
                     }}
                   >

@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  AsyncStorage,
-  ActivityIndicator,
-  Share,
-} from "react-native";
-import { Avatar, Button } from "react-native-elements";
+import { StyleSheet, Text, View, AsyncStorage, Share } from "react-native";
+import { Avatar } from "react-native-elements";
 import {
   Icon,
   Card,
@@ -19,91 +12,54 @@ import {
   Item,
   Fab,
 } from "native-base";
-import { ShareDialog } from "react-native-fbsdk";
-import { TouchableOpacity, FlatList } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Context } from "../../Context/DonerContext";
 
 export default ({ navgation, result, review }) => {
-  const [data, setdata] = useState();
-  const [animate, setanimate] = useState();
   const [active, setactive] = useState(false);
-  const { state, getSingleuserdata } = useContext(Context);
+  const { state, getSingleuserdata, putcomment } = useContext(Context);
+  const [value, setvalue] = useState("");
   console.disableYellowBox = true;
   var id;
   var state2;
-  if (navgation.isFocused) {
-    useEffect(() => {
-      navgation.addListener("focus", () => {
-        console.log("ff");
-        getSingleuserdata();
-        AsyncStorage.getItem("Doner").then((value) => {
-          setdata(JSON.parse(value));
-        });
-      });
+  useEffect(() => {
+    getSingleuserdata();
+    navgation.addListener("state", () => {
+      getSingleuserdata();
     });
-  }
+  }, []);
 
-  const shareLinkContent = {
-    contentType: "link",
-    contentUrl: "https://facebook.com",
-    contentDescription: "Facebook sharing is easy!",
-  };
-
-  const onPresFab = (value) => {
-    setactive(!active);
-  };
   if (state === undefined || state === "") {
-    return (
-      <ActivityIndicator
-        animating={true}
-        size="large"
-        color="#0000ff"
-        style={{ marginTop: "50%" }}
-      />
-    );
+    return <Text>Loding....</Text>;
   }
-  console.log(result + "P");
-  if (result === undefined) {
-    if (data === undefined) {
-      return <Text>Loding....</Text>;
-    }
-    id = data.id;
-    state2 = state[id - 1];
-  } else {
-    console.log("true");
-    state2 = result;
-  }
+  state2 = state[result - 1];
   if (state2 === undefined) {
     return null;
   }
+  const addcom = async () => {
+    var t;
+    await AsyncStorage.getItem("Doner").then((value) => {
+      t = JSON.parse(value);
+    });
+    var n = t.name.split(".");
+    let data = {
+      id: result,
+      user: t.id,
+      comment: value,
+      title: n[0] + ".",
+      name: n[1],
+    };
+    console.log(data);
+    putcomment(data, () => {
+      setvalue("");
+      getSingleuserdata();
+    });
+  };
 
-  // function shareLinkWithShareDialog() {
-  //   var tmp = shareLinkContent;
-  //   console.log(shareLinkContent);
-  //   ShareDialog.show("hello")
-  //     .then(function(canShow) {
-  //       if (canShow) {
-  //         return ShareDialog.show(shareLinkContent);
-  //       }
-  //     })
-  //     .then(
-  //       function(result) {
-  //         if (result.isCancelled) {
-  //           alert("Share operation was cancelled");
-  //         } else {
-  //           alert("Share was successful with postId: " + result.postId);
-  //         }
-  //       },
-  //       function(error) {
-  //         alert("Share failed with error: " + error.message);
-  //       }
-  //     );
-  // }
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message:
-          "React Native | A framework for building native apps using React",
+        message: `Name:${state2.name}\nDonation Type${state2.donation_Type}\nEmail:${state2.email}\nPhone no:${state2.ph}\nAddress:${state2.address}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -118,7 +74,9 @@ export default ({ navgation, result, review }) => {
       alert(error.message);
     }
   };
-
+  const onPresFab = (value) => {
+    setactive(!active);
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={{ alignItems: "center", marginBottom: 70 }}>
@@ -130,22 +88,7 @@ export default ({ navgation, result, review }) => {
           position="topRight"
           onPress={onPresFab}
         >
-          <Icon name="share" />
-          <Button style={{ backgroundColor: "#3B5998" }} onPress={onShare}>
-            <Icon name="logo-facebook" />
-          </Button>
-          <Button style={{ backgroundColor: "#1DA1F2" }}>
-            <Icon name="logo-twitter" />
-          </Button>
-          <Button style={{ backgroundColor: "#3f729b" }}>
-            <Icon name="logo-instagram" />
-          </Button>
-          <Button style={{ backgroundColor: "#34A34F" }}>
-            <Icon name="logo-whatsapp" />
-          </Button>
-          <Button disabled style={{ backgroundColor: "#DD5144" }}>
-            <Icon name="mail" />
-          </Button>
+          <Icon name="share" onPress={onShare} />
         </Fab>
 
         <Avatar
@@ -280,12 +223,10 @@ export default ({ navgation, result, review }) => {
               <Text> Reviews</Text>
             </Left>
           </CardItem>
-          <CardItem>
-            <FlatList
-              data={state2.reviews}
-              key={"" + Math.floor(Math.random() * 9999999)}
-              renderItem={({ item }) => {
-                return (
+          <CardItem style={{ flexDirection: "column" }}>
+            {state2.reviews !== undefined ? (
+              state2.reviews.map((item, key) => (
+                <View style={{ alignSelf: "flex-start", width: "100%" }}>
                   <Card>
                     <CardItem>
                       <Left>
@@ -312,15 +253,23 @@ export default ({ navgation, result, review }) => {
                       </Body>
                     </CardItem>
                   </Card>
-                );
-              }}
-            />
+                </View>
+              ))
+            ) : (
+              <Text>No Comment</Text>
+            )}
           </CardItem>
           {review === false ? null : (
             <CardItem>
               <Left>
                 <Item rounded>
-                  <Input placeholder="Comment" />
+                  <Input
+                    placeholder="Comment"
+                    value={value}
+                    onChangeText={(r) => {
+                      setvalue(r);
+                    }}
+                  />
                 </Item>
               </Left>
               <TouchableOpacity onPress={() => {}} style={{ left: 15 }}>
@@ -328,6 +277,7 @@ export default ({ navgation, result, review }) => {
                   name="ios-arrow-forward"
                   type="Ionicons"
                   style={{ fontSize: 46, color: "#139de8" }}
+                  onPress={addcom}
                 />
               </TouchableOpacity>
             </CardItem>

@@ -16,15 +16,18 @@ import NTPScreen from "./components/NavigationToProfile";
 import UserContext from "./connection/userContext";
 import AuthNavigation from "./navigation/AuthNavigation";
 import { Provider } from "./Context/DonerContext";
+import { Provider as DonercatProvider } from "./Context/DonercatContext";
+import { Provider as DonersearchProvider } from "./Context/DonersearchContex";
+import UpdateScreen from "./components/Update/UpdateInfo";
+import { Icon } from "native-base";
 
 const Stack = createStackNavigator();
 
-export default App = () => {
+export default App = (navigation) => {
   const [loggedIn, setLoggedin] = useState(false);
   const value = { loggedIn, setLoggedin };
   const [data, setdata] = useState(false);
   AsyncStorage.getItem("Doner").then((value) => {
-    console.log(value);
     setdata(JSON.parse(value).LogStatus);
     setLoggedin(JSON.parse(value).LogStatus);
   });
@@ -39,18 +42,37 @@ export default App = () => {
             <View style={styles.container}>
               {Platform.OS === "ios" && <StatusBar barStyle="default" />}
               <Provider>
-                <NavigationContainer>
-                  <Stack.Navigator>
-                    <Stack.Screen
-                      name="Profile"
-                      component={BottomTabNavigator}
-                    />
-                    <Stack.Screen name="CatSpec" component={CatSpecScreen} />
-                    <Stack.Screen name="Location" component={LocationScreen} />
-                    <Stack.Screen name="NTP" component={NTPScreen} />
-                    {/* <Stack.Screen name="Facebook" component={FacebookScreen} /> */}
-                  </Stack.Navigator>
-                </NavigationContainer>
+                <DonercatProvider>
+                  <DonersearchProvider>
+                    <NavigationContainer>
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="Profile"
+                          component={BottomTabNavigator}
+                        />
+                        <Stack.Screen
+                          name="CatSpec"
+                          component={CatSpecScreen}
+                          options={{ title: "Specfied Category" }}
+                        />
+                        <Stack.Screen
+                          name="Location"
+                          component={LocationScreen}
+                        />
+                        <Stack.Screen
+                          name="NTP"
+                          component={NTPScreen}
+                          options={{ title: "Profile" }}
+                        />
+                        <Stack.Screen
+                          name="Update"
+                          component={UpdateScreen}
+                          options={{ title: "Update Info" }}
+                        />
+                      </Stack.Navigator>
+                    </NavigationContainer>
+                  </DonersearchProvider>
+                </DonercatProvider>
               </Provider>
             </View>
           )}

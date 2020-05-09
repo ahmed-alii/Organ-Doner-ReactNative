@@ -3,24 +3,19 @@ import { StyleSheet, Text, View } from "react-native";
 import DisplayCard from "../ConstantCardUI/Card";
 import MapView, { Marker } from "react-native-maps";
 
-import Geolocation from "react-native-geolocation-service";
-
 export default ({ navigation, route }) => {
-  console.log("Location");
+  console.disableYellowBox = true;
+  if (route.params.result.Location === undefined) {
+    return <Text style={{ margin: 20, fontSize: 18 }}>No Location Added</Text>;
+  }
   navigator.geolocation.getCurrentPosition(
-    (position) => {
-      console.log(position);
-    },
+    (position) => {},
     (error) => {
       // See error code charts below.
       console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
-  const region = {
-    latitude: 31.5310513,
-    longitude: 74.2925706,
-  };
   return (
     <View>
       <View style={{ height: 570 }}>
@@ -29,14 +24,14 @@ export default ({ navigation, route }) => {
           style={{ height: 500 }}
           showsUserLocation={true}
           initialRegion={{
-            latitude: 31.5310513,
-            longitude: 74.2925706,
+            latitude: route.params.result.Location.latitude,
+            longitude: route.params.result.Location.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
         >
           <Marker
-            coordinate={region}
+            coordinate={route.params.result.Location}
             style={{ height: 5 }}
             image={require("../../assets/icons/pin.png")}
           />

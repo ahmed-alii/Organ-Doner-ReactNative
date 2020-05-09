@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "user": "abc@gmail.com",
+    "pass": "1234uy",
+    "account_type": "admin"
+  },
+  {
+    "id": 2,
+    "user": "hello@gmail.com",
+    "pass": "1234uy",
+    "account_type": "person"
+  }
+]

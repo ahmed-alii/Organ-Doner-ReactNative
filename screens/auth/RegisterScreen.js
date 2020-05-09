@@ -6,10 +6,13 @@ import {
   StyleSheet,
   View,
   Text,
+  Platform,
 } from "react-native";
-import { Button, Input } from "react-native-elements";
-import { DatePicker, Picker, Item, Icon } from "native-base";
+import { Button, Input, ThemeContext } from "react-native-elements";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker, Item, Icon } from "native-base";
 import { Context } from "../../Context/DonerContext";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function RegisterScreen({ navigation }) {
   const [fullName, setName] = useState("");
@@ -25,7 +28,12 @@ function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const { putregistrationdata } = useContext(Context);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState("date");
+  const [Location, setloac] = useState({ latitude: 0, longitude: 0 });
+  const [valid, setvalid] = useState(false);
 
+  console.disableYellowBox = true;
   function goToLogin() {
     return navigation.navigate("Login");
   }
@@ -54,12 +62,50 @@ function RegisterScreen({ navigation }) {
       status: status,
       religion: religion,
       email: email,
+      Location: Location,
       ph: phone,
+      password: password,
     };
 
-    let formData = new FormData(data);
+    if (fullName === "") {
+      alert("Enter Your Name!");
+      setLoading(false);
+      return false;
+    } else if (age === 0) {
+      alert("Enter Your Proper Age!");
+      setLoading(false);
+      return false;
+    } else if (date === "") {
+      alert("Enter Your Date of Birth By Clicking on it!");
+      setLoading(false);
+      return false;
+    } else if (address === "") {
+      alert("Enter Your Address!");
+      setLoading(false);
+      return false;
+    } else if (Location.latitude === 0 && Location.longitude === 0) {
+      alert("Enter Your Location By Tabing on Location Icon!");
+      setLoading(false);
+      return false;
+    } else if (religion === "") {
+      alert("Enter Your Religon!");
+      setLoading(false);
+      return false;
+    } else if (phone === 0) {
+      alert("Enter Your Phone No#!");
+      setLoading(false);
+      return false;
+    } else if (email === "") {
+      alert("Enter Your Email!");
+      setLoading(false);
+      return false;
+    } else if (password === "") {
+      alert("Enter Your Password!");
+      setLoading(false);
+      return false;
+    }
 
-    console.log(data);
+    let formData = new FormData(data);
     putregistrationdata(data, () => {
       alert("Registration success. Please login.");
       setLoading(false);
@@ -69,6 +115,18 @@ function RegisterScreen({ navigation }) {
     });
   }
 
+  const showDatepicker = () => {
+    showMode("date");
+  };
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setdate(currentDate);
+  };
   return (
     <KeyboardAvoidingView style={styles.container} enabled behavior="height">
       <ScrollView style={{}}>
@@ -84,6 +142,18 @@ function RegisterScreen({ navigation }) {
           </Text>
         </View>
         <View style={{ paddingHorizontal: 20 }}>
+          {show && (
+            <DateTimePicker
+              locale="es"
+              testID="dateTimePicker"
+              timeZoneOffsetInMinutes={0}
+              value={new Date()}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
           <View style={{ flexDirection: "row", marginBottom: 25 }}>
             <Text
               style={{
@@ -137,20 +207,26 @@ function RegisterScreen({ navigation }) {
               borderBottomColor: "grey",
             }}
           >
-            <Text style={{ marginTop: 7, fontSize: 20, color: "grey" }}>
-              Date:
-            </Text>
-            <DatePicker
-              locale={"en"}
-              timeZoneOffsetInMinutes={undefined}
-              modalTransparent={false}
-              animationType={"fade"}
-              placeHolderText="Select date"
-              textStyle={{ color: "green" }}
-              placeHolderTextStyle={{ color: "grey" }}
-              onDateChange={onValueChangedate}
-              disabled={false}
-            />
+            <TouchableOpacity
+              style={{ flexDirection: "row" }}
+              onPress={showDatepicker}
+            >
+              <Icon
+                name="calendar-alt"
+                type="FontAwesome5"
+                style={{ color: "green", fontSize: 21 }}
+              />
+              <Text style={{ fontSize: 18, marginLeft: 5 }}>Select Date:</Text>
+              <Text
+                style={{
+                  marginLeft: 3,
+                  fontSize: 18,
+                  color: "green",
+                }}
+              >
+                {date.toString().substr(4, 12)}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 25 }}>
             <Text
@@ -189,6 +265,47 @@ function RegisterScreen({ navigation }) {
             value={address}
             onChangeText={(n) => setaddress(n)}
           />
+          <TouchableOpacity
+            style={{ flexDirection: "row", marginLeft: 10, marginBottom: 10 }}
+            onPress={() => {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  setloac({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  });
+                },
+                (error) => {
+                  // See error code charts below.
+                  console.log(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+              );
+            }}
+          >
+            <Icon
+              name="my-location"
+              type="MaterialIcons"
+              style={{ color: "green" }}
+            />
+            <Text style={{ fontSize: 18, marginLeft: 5 }}>
+              Click For Location
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              marginLeft: 10,
+              flexDirection: "row",
+              marginBottom: 20,
+              marginTop: 10,
+            }}
+          >
+            <Text style={{ fontSize: 14, width: 180 }}>
+              Latitude:{Location.latitude}
+            </Text>
+            <Text style={{ fontSize: 14 }}>Longitude:{Location.longitude}</Text>
+          </View>
+
           <View>
             <View style={{ flexDirection: "row", marginBottom: 25 }}>
               <Text
@@ -244,6 +361,7 @@ function RegisterScreen({ navigation }) {
             value={password}
             onChangeText={(n) => setPassword(n)}
             textContentType={"password"}
+            secureTextEntry={true}
           />
           <Button
             title={"Submit"}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -6,12 +6,23 @@ import {
   View,
   AsyncStorage,
   SafeAreaView,
+  Text,
 } from "react-native";
 import { Avatar, Button, ListItem } from "react-native-elements";
 import UserContext from "../connection/userContext";
 import Profile from "../components/Profile/Profile";
 
 export default ({ navigation }) => {
+  const [data, setdata] = useState();
+  useEffect(() => {
+    AsyncStorage.getItem("Doner").then((value) => {
+      setdata(JSON.parse(value));
+    });
+  }, []);
+  if (data === undefined) {
+    return <Text>Loading</Text>;
+  }
+
   return (
     <UserContext.Consumer>
       {({ loggedIn, setLoggedin }) => (
@@ -24,7 +35,7 @@ export default ({ navigation }) => {
             contentContainerStyle={styles.contentContainer}
           >
             <SafeAreaView>
-              <Profile navgation={navigation} review={false} />
+              <Profile navgation={navigation} review={false} result={data.id} />
             </SafeAreaView>
             <Button
               title="Sign Out"
