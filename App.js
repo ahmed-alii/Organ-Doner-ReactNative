@@ -18,8 +18,6 @@ import AuthNavigation from "./navigation/AuthNavigation";
 import { Provider } from "./Context/DonerContext";
 import { Provider as DonercatProvider } from "./Context/DonercatContext";
 import { Provider as DonersearchProvider } from "./Context/DonersearchContex";
-import UpdateScreen from "./components/Update/UpdateInfo";
-import { Icon } from "native-base";
 
 const Stack = createStackNavigator();
 
@@ -63,11 +61,6 @@ export default App = (navigation) => {
                           name="NTP"
                           component={NTPScreen}
                           options={{ title: "Profile" }}
-                        />
-                        <Stack.Screen
-                          name="Update"
-                          component={UpdateScreen}
-                          options={{ title: "Update Info" }}
                         />
                       </Stack.Navigator>
                     </NavigationContainer>
