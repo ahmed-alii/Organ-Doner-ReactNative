@@ -128,7 +128,7 @@ function RegisterScreen({ navigation }) {
     setdate(currentDate);
   };
   return (
-    <KeyboardAvoidingView style={styles.container} enabled behavior="height">
+    <KeyboardAvoidingView style={styles.container} enabled behavior={Platform.OS === "ios"? "padding": "height"}>
       <ScrollView style={{}}>
         <View style={{ alignItems: "center" }}>
           <Image
@@ -144,7 +144,7 @@ function RegisterScreen({ navigation }) {
         <View style={{ paddingHorizontal: 20 }}>
           {show && (
             <DateTimePicker
-              locale="es"
+              locale="en"
               testID="dateTimePicker"
               timeZoneOffsetInMinutes={0}
               value={new Date()}
@@ -243,7 +243,7 @@ function RegisterScreen({ navigation }) {
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
-                placeholder="Select your SIM"
+                placeholder="Select your Donation "
                 placeholderStyle={{ color: "#bfc6ea" }}
                 placeholderIconColor="#007aff"
                 selectedValue={donation_Type}
@@ -353,7 +353,8 @@ function RegisterScreen({ navigation }) {
             placeholder="Enter Email"
             value={email}
             onChangeText={(n) => setEmail(n)}
-            textContentType={"emailAddress"}
+            textContentType={"emailAddres"}
+            autoCapitalize={"none"}
           />
           <Input
             inputContainerStyle={styles.input}
@@ -361,6 +362,7 @@ function RegisterScreen({ navigation }) {
             value={password}
             onChangeText={(n) => setPassword(n)}
             textContentType={"password"}
+            autoCapitalize={"none"}
             secureTextEntry={true}
           />
           <Button

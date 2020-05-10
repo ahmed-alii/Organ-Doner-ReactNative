@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import DisplayCard from "../ConstantCardUI/Card";
 import MapView, { Marker } from "react-native-maps";
 
@@ -17,11 +17,11 @@ export default ({ navigation, route }) => {
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
   return (
-    <View>
-      <View style={{ height: 570 }}>
+    <View style={{flex:1}}>
+      <View>
         <Text style={{ margin: 20, fontSize: 22 }}>Map</Text>
         <MapView
-          style={{ height: 500 }}
+          style={{ height: 300 }}
           showsUserLocation={true}
           initialRegion={{
             latitude: route.params.result.Location.latitude,
@@ -37,7 +37,9 @@ export default ({ navigation, route }) => {
           />
         </MapView>
       </View>
-      <DisplayCard result={route.params.result} />
+        <ScrollView>
+            <DisplayCard result={route.params.result} />
+        </ScrollView>
     </View>
   );
 };

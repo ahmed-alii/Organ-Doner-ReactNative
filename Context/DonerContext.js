@@ -29,6 +29,7 @@ const getlogindata = (dispatch) => {
         j++;
       }
     }
+    console.log(a)
     dispatch({ type: "get_login_data", payload: a });
   };
 };

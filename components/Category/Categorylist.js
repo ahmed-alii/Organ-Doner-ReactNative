@@ -10,9 +10,7 @@ export default ({ navigation }) => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
+            justifyContent: "center"}}
         >
           <TouchableOpacity
             style={styles.cat}
@@ -68,9 +66,7 @@ export default ({ navigation }) => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
+            justifyContent: "center"}}
         >
           <TouchableOpacity
             style={styles.cat}
@@ -96,18 +92,24 @@ export default ({ navigation }) => {
             />
             <Text style={styles.catText}>Pancreas</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+        </View>
+      <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center"}}
+        >
+        <TouchableOpacity
             style={styles.cat}
             onPress={() => {
               navigation.navigate("CatSpec", { type: "Blood" });
             }}
-          >
-            <Image
+        >
+          <Image
               style={{ height: 120, width: 120, marginTop: 10 }}
               source={require("../../assets/icons/blood.png")}
-            />
-            <Text style={styles.catText}>Blood</Text>
-          </TouchableOpacity>
+          />
+          <Text style={styles.catText}>Blood</Text>
+        </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -117,8 +119,8 @@ export default ({ navigation }) => {
 const styles = StyleSheet.create({
   cat: {
     backgroundColor: "white",
-    width: 160,
-    height: 160,
+    width: 150,
+    height: 150,
     borderRadius: 10,
     alignItems: "center",
     marginVertical: 20,

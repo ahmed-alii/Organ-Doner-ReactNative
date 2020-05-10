@@ -272,7 +272,7 @@ export default ({ navgation, result, review }) => {
                   />
                 </Item>
               </Left>
-              <TouchableOpacity onPress={() => {}} style={{ left: 15 }}>
+              <TouchableOpacity onPress={() => {addcom().then()}} style={{ left: 15 }}>
                 <Icon
                   name="ios-arrow-forward"
                   type="Ionicons"
