@@ -1,6 +1,8 @@
 import creatrfoodcontext from "./createdonercontext";
 import Doner from "../API/Doner";
 
+//This File Contain all the method to get the data or put the to the API
+
 const Foodreducer = (state, action) => {
   switch (action.type) {
     case "get_login_data":
