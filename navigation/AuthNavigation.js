@@ -7,6 +7,9 @@ import ResetPassword from "../screens/auth/ResetPassword";
 const Stack = createStackNavigator()
 
 export default function AuthNavigation() {
+    
+    //Contain the list of navigation screen from the login screen
+    
     return (
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} />
