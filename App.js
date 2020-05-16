@@ -16,6 +16,10 @@ import {Provider as DonersearchProvider} from "./Context/DonersearchContex";
 const Stack = createStackNavigator();
 
 export default App = (navigation) => {
+  //Staring of the App
+  //Initail Screen will be login screen if not logged in other wise a bottomtabnavigator (ProfileScreen,CategoryScreen,SearchScreen)
+  //Contain the list of all the navigation screen of the app
+  
   const [loggedIn, setLoggedin] = useState(false);
   const value = {loggedIn, setLoggedin};
   const [data, setdata] = useState(false);
