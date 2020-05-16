@@ -5,6 +5,9 @@ import { Context } from "../Context/DonerContext";
 
 export default ({ navigation, route }) => {
   const [data, setdata] = useState();
+  
+  //Just a navigator file to render the profile of the user
+  
   useEffect(() => {
     AsyncStorage.getItem("Doner").then((value) => {
       setdata(JSON.parse(value));
