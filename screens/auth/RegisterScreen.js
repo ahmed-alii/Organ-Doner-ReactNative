@@ -15,6 +15,9 @@ import { Context } from "../../Context/DonerContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 function RegisterScreen({ navigation }) {
+  
+  //This File is used to registor the user in the system
+  
   const [fullName, setName] = useState("");
   const [title, settitle] = useState("Mr.");
   const [age, setage] = useState(0);
