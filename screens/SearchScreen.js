@@ -18,6 +18,9 @@ export default function SearchScreen({ navigation }) {
   const [Ainemate, setanimate] = useState();
   const { state, getsearch } = useContext(Context);
   console.disableYellowBox = true;
+  
+  //This File is used to render the list of the result from the user search
+  
   useEffect(() => {
     navigation.addListener("focus", () => {
       setresult(undefined);
