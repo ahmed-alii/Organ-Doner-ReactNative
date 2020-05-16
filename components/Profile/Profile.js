@@ -16,6 +16,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Context } from "../../Context/DonerContext";
 
 export default ({ navgation, result, review }) => {
+  
+  //this File contain the UI card to display the detail of the a specfic user 
+  
   const [active, setactive] = useState(false);
   const { state, getSingleuserdata, putcomment } = useContext(Context);
   const [value, setvalue] = useState("");
