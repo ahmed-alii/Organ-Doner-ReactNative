@@ -4,6 +4,9 @@ import { ScrollView } from "react-native-gesture-handler";
 
 export default ({ navigation }) => {
   console.disableYellowBox = true;
+  
+  //this file is the UI of the doner category list and used to navigate to the specficed doner category list 
+  
   return (
     <ScrollView>
       <View style={{ flex: 1 }}>
