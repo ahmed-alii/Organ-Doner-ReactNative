@@ -12,6 +12,8 @@ const INITIAL_ROUTE_NAME = "Home";
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
+  //Contain the list of the bottomtab navigator list
+  
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
