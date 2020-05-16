@@ -5,6 +5,9 @@ import MapView, { Marker } from "react-native-maps";
 
 export default ({ navigation, route }) => {
   console.disableYellowBox = true;
+  
+  //This File is used  to give the location coordinates  of the user and the doner on the map
+  
   if (route.params.result.Location === undefined) {
     return <Text style={{ margin: 20, fontSize: 18 }}>No Location Added</Text>;
   }
