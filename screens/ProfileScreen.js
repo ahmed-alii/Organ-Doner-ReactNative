@@ -13,6 +13,9 @@ import UserContext from "../connection/userContext";
 import Profile from "../components/Profile/Profile";
 
 export default ({ navigation }) => {
+  
+  //This File to render the profile of the user
+  
   const [data, setdata] = useState();
   useEffect(() => {
     AsyncStorage.getItem("Doner").then((value) => {
