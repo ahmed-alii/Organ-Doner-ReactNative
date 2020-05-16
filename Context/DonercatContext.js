@@ -1,6 +1,8 @@
 import creatrfoodcontext from "./createdonercontext";
 import Doner from "../API/Doner";
 
+//This is used to get the data of the Specfic Doner Categoy from the API
+
 const Foodreducer = (state, action) => {
   switch (action.type) {
     case "get_cat_data":
