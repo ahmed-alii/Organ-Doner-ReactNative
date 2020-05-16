@@ -13,6 +13,9 @@ import {
 } from "native-base";
 
 export default ({ result }) => {
+  
+  //This File is the UI card to show as a single list item as a short detail of the user on the search screen and category screen 
+  
   return (
     <View style={{ margin: 20 }}>
       <Card
