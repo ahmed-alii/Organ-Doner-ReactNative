@@ -24,6 +24,9 @@ export default ({ navigation, route }) => {
   const { state, getcatdata } = useContext(Context);
   const [Ainemate, setanimate] = useState();
   console.disableYellowBox = true;
+  
+  //This file is used to render the Specfic doner category list 
+  
   useEffect(() => {
     setanimate(true);
     getcatdata(route.params.type);
