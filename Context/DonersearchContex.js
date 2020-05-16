@@ -1,6 +1,8 @@
 import creatrfoodcontext from "./createdonercontext";
 import Doner from "../API/Doner";
 
+//This File is used to get the search list of the organ doner type
+
 const Foodreducer = (state, action) => {
   switch (action.type) {
     case "get_filter":
