@@ -37,6 +37,8 @@ function Login({ navigation, firebase }) {
   const { state, getlogindata } = useContext(Context);
   console.disableYellowBox = true;
 
+  //This file is used to For the user to login in the App
+  
   function goToSignup() {
     return navigation.navigate("Register");
   }
